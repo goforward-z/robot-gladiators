@@ -20,23 +20,42 @@ var enemyAttack=12;
 // fight function
 var fight = function(enemyName) {
     //repeat and execute as long as the enemy-robot is alive
-    while(enemyHealth>0){
+    while(playerHealth>0&&enemyHealth>0){
         
         //Ask player if they like'd fight or run
         var promptFight=window.prompt("would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or'SKIP' to choose.");
+          
+        // if player choses to skip confirm and then stop the loop
+        if (promptFight === "skip" || promptFight === "SKIP") {
+            // confirm player wants to skip
+            var comfirmSkip = window.confirm("Are you sure you'd like to quit?");
         
+            //if yes(true),leave fight
+            if(comfirmSkip){
+                window.alert(playerName + "has decied to skip this fight. Goodbye!");
+                //subtract money from playMoney for skipping
+                playerMoney = playerMoney - 10
+                console.log("playerMoney",playerMoney);
+                break;
+            }
+        }
+        // remove enemy's health by subtracting the amount set in the playerAttack variable
+        enemyHealth = enemyHealth - playerAttack;
+        console.log(
+          playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining."
+        );
         
-        // if player choses to fight, then fight
-        if (promptFight === "fight" || promptFight === "FIGHT") {
-            // remove enemy's health by subtracting the amount set in the playerAttack variable
-            enemyHealth = enemyHealth - playerAttack;
-            console.log(
-              playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining."
-            );
+       
+            
           
             // check enemy's health
             if (enemyHealth <= 0) {
               window.alert(enemyName + " has died!");
+
+              //award player money for winning
+              playerMoney=playerMoney+20;
+              //leave while loop() since enemy is dead
+              break;
             } else {
               window.alert(enemyName + " still has " + enemyHealth + " health left.");
             }
@@ -50,27 +69,15 @@ var fight = function(enemyName) {
             // check player's health
             if (playerHealth <= 0) {
               window.alert(playerName + " has died!");
+              //leave while()loop if player is dead
+              break;
             } else {
               window.alert(playerName + " still has " + playerHealth + " health left.");
             }
-            // if player choses to skip
-          } else if (promptFight === "skip" || promptFight === "SKIP") {
-            // confirm player wants to skip
-            var comfirmSkip = window.confirm("Are you sure you'd like to quit?");
-        
-            //if yes(true),leave fight
-            if(comfirmSkip){
-                window.alert(playerName + "has decied to skip this fight. Goodbye!");
-                //subtract money from playMoney for skipping
-                playerMoney = playerMoney - 2
-            }
-            // if no (false),ask question again by running fight()again
-            else{
-                fight();
-            }
-        }
-    }
-}
+          
+    }//end of while loop
+};//end of fight function
+
     
 
 for(var i=0; i<enemyNames.length;i++){
